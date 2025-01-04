@@ -1,0 +1,164 @@
+﻿@model BeautyHub.Entities.ServiceTime
+
+@{
+    ViewBag.Title = "Admin ServiceTimes";
+    Layout = "~/Views/Shared/_Dashboardlayout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <style>
+        input{
+            width: 150px;
+        }
+    </style>
+
+    <div class="form-horizontal">
+        <h4>ServiceTime</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <form id="basic-form" action="" method="post">
+            <label for="starttime">Start Time</label>
+            <input name="startTime" type="number" id="startTime" placeholder="In 24h Format" min="0" max="24" />
+            <span id="startTimeError" style="color:red"></span><br />
+
+            <label for="durationGap">Duration Gap</label>
+            <input name="durationGap" type="number" id="durationGap" placeholder="In Minutes" min="1" max="60" />
+            <span id="durationGapError" style="color:red"></span><br />
+
+            <label for="endTime">End Time</label>
+            <input name="endTime" type="number" id="endTime" placeholder="In 24h Format" min="0" max="24" />
+            <span id="endTimeError" style="color:red"></span><br />
+
+            <button type="button" id="generate">Generate</button>
+            <button type="button" id="clear">Clear</button>
+        </form>
+
+        <table id="serviceTimeForm" style="width:300px">
+            @Html.EditorForModel()
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+    $(document.getElementById("generate").addEventListener("click", function (event) {
+        event.preventDefault();
+        var times = []; // time array
+        var dg = parseInt($("#durationGap").val()); //minutes interval
+        var tt = parseInt($("#startTime").val() * 60); // start time
+        var te = parseInt($("#endTime").val() * 60);
+        var ap = ['AM', 'PM']; // AM-PM
+
+        validateInput();
+        if (validateInput() == false) {
+            return false;
+        }
+        else {
+            //loop to increment the time and push results in array
+            for (var i = 0; tt < te; i++) {
+                var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
+                var mm = (tt % 60); // getting minutes of the hour in 0-55 format
+                var start = ("" + ((hh == 12) ? 12 : hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
+
+                tt = tt + dg;
+
+                var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
+                var mm = (tt % 60); // getting minutes of the hour in 0-55 format
+                var end = ("" + ((hh == 12) ? 12 : hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + ap[Math.floor(hh / 12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
+
+                times[i] = (start + ' - ' + end)
+
+                addRow(times[i]);
+            }
+
+            console.log(times);
+        }
+    }));
+
+    function addRow(timeRange) {
+        $.ajax({
+            async: false,
+            url: "/ServiceTimes/GetServiceTime/",
+            type: "get",
+            data: {time: timeRange},
+            success: function (data) {
+                $("#serviceTimeForm").append(data);
+            },
+            error: function (error) {
+                console.log(error.status);
+            }
+        });
+    };
+
+    $(document.getElementById("clear").addEventListener("click", function (event) {
+        clearRows();
+        clearInput();
+    }));
+
+    function clearRows() {
+        var table = $(document.getElementById("serviceTimeForm"));
+        table.remove();
+    }
+
+    function clearInput() {
+        $("#startTime").val(0);
+        $("#endTime").val(0);
+        $("#durationGap").val(0);
+    }
+
+    function validateInput() {
+
+        var st = parseInt($("#startTime").val());
+        var et = parseInt($("#endTime").val());
+        var dg = parseInt($("#durationGap").val());
+
+        if (st > 24 || st <= 0 || isNaN(st)) {
+            $('#startTimeError').show();
+            $('#startTimeError').html
+                ("**Invalid start time");
+            return false;
+        }
+        else if (dg < 30 || isNaN(dg)) {
+            $('#durationGapError').show();
+            $('#durationGapError').html
+                ("**Invalid Duration Gap");
+            return false;
+        }
+        else if (st > et || isNaN(et) || et > 24 || et <= 0) {
+            $('#endTimeError').show();
+            $('#endTimeError').html
+                ("**Invalid end time");
+            return false;
+        }
+    }
+
+    $('#durationGap, #startTime, #endTime').on("focus", function () { hideError() });
+
+    function hideError() {
+        $('#startTimeError').hide();
+        $('#endTimeError').hide();
+        $('#durationGapError').hide();
+    }
+
+</script>

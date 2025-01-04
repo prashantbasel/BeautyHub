@@ -1,0 +1,186 @@
+﻿body 
+{
+    font-family:Poppins;
+    padding:0px;
+    margin:0px;
+}
+h2 {
+  color: black;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  position: relative;
+  margin: 30px 0 60px;
+  color:#F24968;
+  
+}
+
+h2::after {
+  content: "";
+  width: 100px;
+  position: absolute;
+  margin: 0 auto;
+  height: 4px;
+  background: #F24968;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  transition:all ease 0.5s;
+}
+h2:hover::after
+{
+    transform:scaleX(0.9);
+}
+.navbar 
+{
+    box-shadow: 0px 3px 10px -7px #00007F !important;
+}
+.container-fluid
+{
+    margin-right:0px;
+    margin-left:0px;
+}
+.container
+{
+    width:100% !important;
+}
+header {
+    height: 80vh;
+    background:  url(../Content/images/banner1.png);
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.wrapper {
+    background: rgba(255, 235, 244, 1);
+}
+.header-content {
+    display: inline-block;
+    position: absolute;
+    top: 15%;
+    left: 7%;
+}
+.header-text h1 {
+    font-size: 100px;
+    font-weight: 400;
+    color: #344C57;
+    font-family: 'Monotype Corsiva';
+}
+.header-text p {
+    font-size: 24px;
+    color: #344C57;
+    margin-top:-5px;
+    font-family: Poppins;
+}
+.header-booking-button {
+    background-color: #344C57;
+    width: 250px;
+    padding: 15px;
+    border: none;
+    border-radius: 0px;
+    margin-top: 35px;
+    box-shadow: 0px 3px 10px -7px #00007F !important;
+    transition:all ease-in-out 0.2s;
+}
+
+.header-booking-button:hover {
+    background-color: #444C57;
+    transform:scale(1.03);
+}
+.header-booking-button:active {
+    background-color: #444C57;
+}
+#about-section
+{
+    background:url(../Content/images/about-section.png);
+    background-size:cover;
+}
+.aboutus-img-box {
+    /*background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)), url(../Content/images/about.jpg);*/
+    background-size: contain;
+    background-position: center;
+    height: 250px;
+    position:relative;
+    overflow:hidden;
+}
+.aboutus-img-box img {
+    width:100%;
+}
+.about-us-info {
+    color: #344C57;
+    font-weight: 500;
+}
+.card {
+    border-radius: 0px;
+    background: #ffffff !important;
+    box-shadow: 0px 3px 10px -7px #00007F !important;
+    padding-bottom:5px;
+    transition:all ease 0.5s;
+}
+.card:hover {
+    transform:scale(1.02);
+}
+.card:last-child {
+    margin-right:0px;
+}
+.card img 
+{
+    height: 200px;
+    overflow-x: hidden;
+}
+.card-text
+{
+    margin-top:0px;
+    margin-bottom:5px;
+}
+.service-booking-btn
+{
+    background:#F24968;
+    border:none;
+    border-radius:0px;
+    margin-top:12px;
+    padding:10px 0px;
+}
+.service-booking-btn:hover 
+{
+    background: #8890BF;
+}
+.service-price
+{
+    font-size:20px;
+    font-weight:600;
+}
+.service-category
+{
+    font-weight:500;
+}
+.service-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+.view-all-button {
+    background: #344C57;
+    padding: 10px;
+    transition:all ease 0.5s;
+}
+.view-all-button:hover
+{
+    transform:scale(1.03);
+    background:#404040;
+}
+#appointment-form {
+    background: #E5DCE3;
+}
+.location {
+    background: #DBC2D4 !important;
+    border: none;
+}
+.location .card-body
+{
+    color:#404040;
+}
+.footer-section {
+    background-color: #F28599 !important;
+}

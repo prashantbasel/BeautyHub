@@ -1,0 +1,163 @@
+﻿@model IEnumerable<BeautyHub.Models.ApplicationUser>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/dataTables.jqueryui.min.css">
+
+<link href="~/Content/Style.css" rel="stylesheet" />
+@{
+    Layout = "~/Views/Shared/_Dashboardlayout.cshtml";
+    ViewBag.Title = "Admin Users";
+}
+
+<section class="table-content">
+    <div class="d-flex flex-row justify-content-end">
+        @Html.ActionLink("Add User", "Register", "Account", new { }, new { @class = "btn btn-success register-button" })
+    </div>
+    <table class="table table-bordered" id="user_table">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Image)</th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().PhoneNumber)
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.Image != null)
+                        {
+                            var base64 = Convert.ToBase64String(item.Image);
+                            var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <div class="admin-image-holder">
+                                <img src='@imageSrc' class="admin-image" alt="" width="50" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="admin-image-holder">
+                                <img src="~/Content/images/profile.jpg" class="user-profile" width="50" />
+                            </div>
+                        }
+                    </td>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Role.Name</td>
+                    <td>
+                        @if (item.Status.ToLower() == "blocked")
+                        {
+                            <span>@item.Status</span>
+                        }
+                        else
+                        {
+                            <span>@item.Status</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!(User.Identity.IsAuthenticated && User.Identity.Name == item.Email))
+                        {
+                            if (item.Status.ToLower()=="blocked")
+                            {
+                                @*<a href="@Url.Action("UserStatus","Admin",new { id = $"{item.Id}", status = "activate" })"  class="btn btn-outline-success"><i class="fas fa-user-check"></i></a>*@
+                                <button class="btn btn-outline-success" id="btn-@item.Id" data-userId="@item.Id" data-userStatus="@item.Status"><i id="icon-@item.Id" class="fas fa-user-check"></i></button>
+                            }
+                            else if(item.Status.ToLower()=="active")
+                            {
+                                @*<a href="@Url.Action("UserStatus","Admin",new { id = $"{item.Id}", status = "deactivate" })" class="btn btn-outline-danger"><i class="fas fa-user-times"></i></a>*@
+                                <button class="btn btn-outline-danger" id="btn-@item.Id" data-userId="@item.Id" data-userStatus="@item.Status"><i id="icon-@item.Id" class="fas fa-user-times"></i></button>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("UpdateProfile","Account",new { id = $"{item.Id}"})" class="btn btn-outline-success"><i class="far fa-edit"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootbox.js"></script>
+<script>
+    $("#user_table").DataTable({
+        "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]],
+        columns: [
+            { orderable: false },
+            null,
+            null,
+            { orderable: false },
+            null,
+            null,
+            { orderable: false }
+        ]
+    });
+    $(function () {
+        $("#user-table-body").on("click", "button", function (e) {
+            var btnId = e.currentTarget.id;
+            var button = $("#" + btnId);
+            bootbox.confirm({
+                title: `<strong class="text-secondary">User Status</strong>`,
+                message: "<strong>Update User Status?</strong>",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        className: "btn btn-primary",
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            method: "get",
+                            url: "/Users/UserStatus/",
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            data: { id: e.currentTarget.dataset.userid, status: e.currentTarget.dataset.userstatus },
+                            success: function (data) {
+                                console.log(data);
+                                var btnId = e.currentTarget.id;
+                                var iconId = e.target.id;
+                                var button = $("#" + btnId);
+                                var icon = $("#" + iconId);
+                                button.toggleClass("btn-outline-danger");
+                                button.toggleClass("btn-outline-success");
+                                button.children(".fas").toggleClass("fa-user-times");
+                                button.children(".fas").toggleClass("fa-user-check");
+                                button.attr("data-userstatus", data.Status);
+                                console.log(button.parent().prev().html(`<span>${data.Status}</span>`));
+
+                            },
+                            error: function (error) { alert("Something went wrong"); }
+                        });
+                    }
+
+                }
+            });
+
+        });
+    });
+</script>

@@ -1,0 +1,253 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using BeautyHub.Models
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="~/Content/DashboardLayout.css" rel="stylesheet" />
+    <link href="~/Content/style_dashboard.css" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+
+    <!--Page Wrapper -->
+    <div id="wrapper">
+
+        <!--Sidebar-->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion position-sticky" id="accordionSidebar">
+
+            <!--Sidebar Brand-->
+            <a class="sidebar-brand d-flex align-items-center" href="@Url.Action("Index", "Home", new { })">
+                <div class="sidebar-brand-text mx-1 d-block">Beauty Hub@*<h5 class="font-weight-bold">Beauty<span class="font-weight-normal">Hub</span></h5>*@</div>
+            </a>
+
+            @*Divider*@
+            <hr class="sidebar-divider my-0" />
+
+            @{
+
+                if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item @(ViewBag.Title == "Admin Dashboard" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Dashboard", "Admin")">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @((ViewBag.Title == "Admin Appointments") || (ViewBag.Title == "Appointment Edit") ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Index", "Appointments")">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Bookings</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin Categories" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Index", "Categories", new { })">
+                            <i class="fas fa-th-large"></i>
+                            <span>Categories</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin Services" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Index", "Services", new { })">
+                            <i class="fas fa-cog"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin ServiceTimes" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Index", "ServiceTimes", new { })">
+                            <i class="fas fa-cog"></i>
+                            <span>Service Times</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin OfficeLocations" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Index", "OfficeLocations", new { })">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin Users" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("UserList", "Users", new { })">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Admin Rewards" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Rewards", "Admin")">
+                            <i class="fas fa-gift"></i>
+                            <span>Rewards</span>
+                        </a>
+                    </li>
+                }
+                if (User.IsInRole("User"))
+                {
+                    <li class="nav-item @((ViewBag.Title == "User Dashboard") || (ViewBag.Title == "Appointment Edit") ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Dashboard", "Users")">
+                            <i class="far fa-tachometer-alt-slow"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "UpdateProfile" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("UpdateProfile", "Account")">
+                            <i class="far fa-user-alt"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item @(ViewBag.Title == "Users Appointments" ? "active" : "")">
+                        <a class="nav-link" href="@Url.Action("Appointments", "Users")">
+                            <i class="far fa-calendar"></i>
+                            <span>Appointments</span>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+        <!--End of Sidebar-->
+        <!--Content Wrapper-->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!--Main Content -->
+            <div id="content">
+
+                <!--Topbar  -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    @*Sidebar Toggle (Topbar)*@
+                    <button id="sidebarToggleTop" class="btn btn-link @*d-md-none*@ rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <div class="ml-auto text-center">
+                        <ul class="navbar-nav ml-auto mr-4">
+                            @{
+                                ApplicationDbContext context = new ApplicationDbContext();
+                                ApplicationUser user;
+                                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                                user = userManager.FindById(User.Identity.GetUserId());
+                                var imageSrc = "";
+                                var firstName = user.FirstName;
+                                var lastName = user.LastName;
+                                var fullName = firstName + " " + lastName;
+                                var firstLetterOfName = firstName.Substring(0, 1);
+                            }
+                            <li class="navbar-item d-flex align-items-center">
+                                <span class="font-weight-bold mr-2" style="color: #f87f76;">@fullName</span>
+                                <div class="d-flex flex-column"></div>
+                                @{if (user.Image != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(user.Image);
+                                        imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                                        <img class="user-profile ml-1" src='@imageSrc' alt="" height=50 />
+                                    }
+                                    else
+                                    {
+                                        <div class="user-profile ml-2 d-flex justify-content-center align-items-center">
+                                            <h3 class="profile-name text-white" style="padding-top: 15px;">@firstLetterOfName</h3>
+                                        </div>
+                                    }
+                                }
+                            </li>
+
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <li class="navbar-item d-block ml-2">
+                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt" style="color: #f87f76;"></i>
+                                    </a>
+                                    @*<a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                            <i class="fas fa-sign-out-alt" style="color: #f87f76;"></i>
+                                        </a>*@
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                </nav>
+
+                <Section class=" col-md-12 mx-auto render-body-section">
+                    @RenderBody()
+                </Section>
+
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/Scripts/jquery-3.4.1.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @*<script src="~/Scripts/bootstrap.bundle.js"></script>*@
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/Scripts/jquery.easing.js"></script>
+
+    <!-- Custom scripts for all pages-->
+
+    <script src="~/Scripts/dashboardLayout.js"></script>
+    <script src="~/Scripts/main.js"></script>
+</body>
+
+</html>

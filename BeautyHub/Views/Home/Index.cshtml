@@ -1,0 +1,140 @@
+﻿@model BeautyHub.ViewModels.HomeViewModel
+@{ ViewBag.Title = "Home Page"; }
+
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link href="~/Content/login.css" rel="stylesheet" />
+<link href="~/Content/user-page.css" rel="stylesheet" />
+
+<div class="wrapper pl-2 pr-2 pl-md-2 pr-md-2 pr-lg-0 pl-lg-0">
+    <header class="container-fluid hero-section">
+    <div class="header-content">
+        <div class="header-text">
+            <h1>
+                <strong>Beauty</strong> Hub
+            </h1>
+            <p>
+                Your daily beauty ritual
+            </p>
+        </div>
+        <!-- <img src="./images/BlossomBrows.png" alt="" srcset=""> -->
+        <!-- <img src="./images/sliderimage.jpg" class="d-block w-100" alt="" srcset=""> -->
+        <div class="book-online-btn">
+            <button type="button" class="btn btn-dark header-booking-button book-now-button">
+                Book Now
+            </button>
+        </div>
+        <!-- src=  class="d-block w-100"alt=""> -->
+    </div>
+</header>
+
+<section id="about-section" class="mt-5 pt-3 pb-3 bg-light">
+    <div class="container">
+        <h2 class="mr-auto mb-4 text-center">ABOUT</h2>
+
+        <div class="row d-flex align-items-center">
+            <div class=" aboutus-img-box col-md-4 col-12 col-lg-5 col-lg-5 mb-3 mt-4">
+                <img src="~/Content/images/about-3.png" alt=""/>
+            </div>
+            <div class=" about-us-info col-lg-7 col-md-8 col-sm-7 col-12">
+                <!-- <h3 class="text-white">ABOUT</h3> -->
+                <!-- <h2 class="mr-auto mb-4">ABOUT</h2> -->
+                <p class="about-us-info text-justify ">
+                    Culpa officia sint reprehenderit commodo veniam tempor Lorem. Sunt veniam magna cillum eiusmod irure.
+                    Veniam ea esse ipsum sunt eu sunt sint irure elit velit. Fugiat in occaecat amet aliqua quis officia do ipsum eu.
+                    Cillum cillum elit ullamco minim cupidatat ea consectetur aliquip dolore deserunt ex.
+                    Aliqua duis laborum in ipsum et enim id labore quis irure. Occaecat sit laborum minim aliqua do commodo consequat tempor voluptate laborum eiusmod enim magna.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id='services' class="mt-5">
+    <div class="container">
+        <h2 class="text-center">SERVICES</h2>
+        <div class="row-col">
+            <div class="card-group mx-auto">
+                @foreach (var service in Model.Services)
+                {
+                    <div class="col-12 col-md-4 col-lg-4 col-12 p-0 pb-4 p-md-1 p-lg-4">
+                        <div class="card">
+                            @if (service.Image != null)
+                            {
+                                var base64 = Convert.ToBase64String(service.Image);
+                                var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                <img src='@imageSrc' alt="" />
+                            }
+                            <div class="card-body text-left">
+                                <h5 class="card-title service-name">@service.Name</h5>
+                                <div class="card-text service-category">@service.Category.Name </div>
+                                <div class="card-text service-price">$@service.Price</div>
+                                <button class="service-booking-btn btn btn-dark w-100 book-now-button">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                 }
+
+            </div>
+        </div>
+
+        <div class="view-all d-flex justify-content-center">
+            <a href="@Url.Action("Services","Home")" class="view-all-button btn btn-dark rounded-pill mt-4 mb-3 border-0 col-12 col-sm-6 col-md-6 col-lg-4">View All</a>
+        </div>
+    </div>
+</section>
+
+<section class="mt-4 bg-light pt-3 pb-3" id="appointment-form">
+    <div class="container">
+        <h2> Book your Appointment</h2>
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 mx-auto align-self-center px-xl-5 px-lg-4 px-md-4 px-sm-4 px-4 pt-xl-5 pt-lg-4 py-md-4 py-sm-4 py-4 pb-xl-4 pb-lg-3" id="appointment-form">
+            <div class="align-self-center w-100">
+                <div class="align-items-center mb-3">
+                </div>
+                @Html.Partial("_AppointmentForm", Model.Appointment)
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="location-section" class="mt-5 mb-5">
+
+    <div class="container">
+        <h2>Our Branch Location</h2>
+        <div class="row mx-auto">
+            @foreach (var location in Model.Locations)
+            {
+                <div class="col-12 col-md-6 col-lg-4 col-sm-12 mb-2">
+                    <div class=" location card shadow-sm">
+                        <div class="card-body">
+
+                            <h6 class="card-title">
+                                <i class="fas fa-map-marked-alt mr-3"></i> @location.Address
+                            </h6>
+
+                            <h6 class="card-title">
+                                <i class="fas fa-phone-volume mr-3"></i>
+                                @location.PhoneNumber
+                            </h6>
+                            <h6 class="card-title"> <i class="far fa-envelope mr-3"></i> @location.Email</h6>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    let registrationForm = $("#appointment-form");
+    let booknow = $(".book-now-button");
+
+    booknow.click(function () {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: registrationForm.offset().top-60
+        }, 500);
+    });
+</script>

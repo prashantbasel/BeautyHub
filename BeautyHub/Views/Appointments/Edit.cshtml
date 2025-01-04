@@ -1,0 +1,273 @@
+﻿@model BeautyHub.Entities.Appointment
+
+@{
+    ViewBag.Title = "Appointment Edit";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<link href="~/Content/login.css" rel="stylesheet" />
+<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 mx-auto align-self-center px-xl-5 px-lg-4 px-md-4 px-sm-4 px-4 pt-xl-5 pt-lg-4 py-md-4 py-sm-4 py-4 pb-xl-4 pb-lg-3" id="appointment-form">
+    <div class="align-self-center w-100">
+        <div class="align-items-center mb-3">
+            <h4 class="text-center w-100 heading-text">Appointment</h4>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <span style="color:#F87F76;">@ViewBag.Error</span>
+
+            <div class="row">
+                <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                    @Html.LabelFor(m => m.CategoryId, "Category", new { @class = "control-label " })<span id="required">*</span>
+                    <div class="inner-addon left-addon">
+                        <i class="far fa-tag"></i>
+                        @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                    @Html.LabelFor(m => m.ServiceId, "Service", new { @class = "control-label" })<span id="required">*</span>
+                    <div class="inner-addon left-addon">
+                        <i class="far fa-praying-hands"></i>
+                        @Html.DropDownList("ServiceId", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ServiceId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                    @Html.LabelFor(model => model.AppointmentDate, htmlAttributes: new { @class = "control-label" })<span id="required">*</span>
+                    <div class="inner-addon left-addon">
+                        <i class="far fa-calendar-alt"></i>
+                        @Html.TextBoxFor(model => model.AppointmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                        @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                    @Html.LabelFor(model => model.ServiceTimeId, "Service Time", new { @class = "control-label" })<span id="required">*</span>
+                    <div class="inner-addon left-addon">
+                        <i class="far fa-clock"></i>
+                        @Html.DropDownList("ServiceTimeId", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.ServiceTimeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                @Html.LabelFor(m => m.OfficeLocationId, "Office Location", new { @class = "control-label" })<span id="required">*</span>
+                <div class="inner-addon left-addon">
+                    <i class="far fa-map-marker-alt"></i>
+                    @Html.DropDownList("OfficeLocationId", null, htmlAttributes: new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(model => model.OfficeLocationId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            if (!User.IsInRole("User"))
+            {
+                if (ViewBag.UserId != null)
+                {
+                    <fieldset class="mt-4">
+                        <legend class="">Personal Info</legend>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-user"></i>
+                                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @Value = ViewBag.FirstName, @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.LastName, new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-user"></i>
+                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @Value = ViewBag.LastName, @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-envelope"></i>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @Value = ViewBag.Email, @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-phone-alt"></i>
+                                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @Value = ViewBag.PhoneNumber, @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                }
+                else
+                {
+                    <fieldset class="mt-4">
+                        <legend class="">Personal Info</legend>
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-user"></i>
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.FirstName } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.LastName, new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-user"></i>
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.LastName } })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-envelope"></i>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.Email } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                                @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label" })<span id="required">*</span>
+                                <div class="inner-addon left-addon">
+                                    <i class="far fa-phone-alt"></i>
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.PhoneNumber }, required = "required" })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                }
+            }
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                @Html.LabelFor(m => m.Message, new { @class = "control-label" })
+                <div class="">
+                    @Html.TextAreaFor(m => m.Message, new { @class = "form-control", @rows = "5" })
+                    @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                <div class="">
+                    <button type="submit" value="Save" class="btn w-100 p-2" style="background:#F87F76"><span class="text-white">Save Changes</span></button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+    let categoryDropdown = $('#CategoryId');
+    let serviceDropdown = $('#ServiceId');
+    let serviceTimeDropdown = $('#ServiceTimeId');
+
+    $(document.getElementById("CategoryId").addEventListener("change", function () {
+        clearServiceDropdown();
+
+        $.ajax({
+            async: false,
+            url: "/Appointments/GetServices/",
+            type: "get",
+            data: { categoryId: this.value },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (key, entry) {
+                    serviceDropdown.append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (error) {
+                console.log(error.status);
+            }
+        });
+    }));
+
+    $(document.getElementById("AppointmentDate").addEventListener("change", function () {
+
+        clearServiceTimeDropdown();
+
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1;
+        var day = today.getDate();
+        if (month <= 9) {
+            month = "0" + month;
+        }
+        if (day <= 9) {
+            day = "0" + day;
+        }
+        var formatted = year + "-" + month + "-" + day;
+
+        if (Date.parse(this.value) < Date.parse(formatted)) {
+            $("#AppointmentDate").val('');
+            bootbox.alert('Oops! You cannot select dates before today');
+            return;
+        }
+        else {
+            $.ajax({
+                async: false,
+                url: "/Appointments/GetServiceTimes/",
+                type: "get",
+                data: { AppointmentDate: this.value },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    $.each(data, function (key, entry) {
+                        serviceTimeDropdown.append($('<option></option>').attr('value', entry.Id).text(entry.TimeRange));
+                    })
+                },
+                error: function (error) {
+                    console.log(error.status);
+                }
+            });
+        }
+    }));
+
+    function clearCategoryDropdown() {
+        categoryDropdown.prepend('<option selected="true" disabled>Choose Category</option>');
+        categoryDropdown.prop('selectedIndex', 0);
+    }
+
+    function clearServiceDropdown() {
+        serviceDropdown.empty();
+        serviceDropdown.append('<option selected="true" disabled>Choose Service</option>');
+        serviceDropdown.prop('selectedIndex', 0);
+    };
+
+    function clearServiceTimeDropdown() {
+        serviceTimeDropdown.empty();
+        serviceTimeDropdown.append('<option selected="true" disabled>Choose Service Time</option>');
+        serviceTimeDropdown.prop('selectedIndex', 0);
+    };
+
+</script>

@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using BeautyHub.Models
+
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+    ApplicationUser user;
+    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+    user = userManager.FindById(User.Identity.GetUserId());
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <li class="navbar-item d-none d-lg-block">
+            <div class="dropdown">
+                @{
+                    var imageSrc = "";
+                    var firstName = user.FirstName;
+                    var firstLetterOfName = firstName.Substring(0, 1);
+                }
+                @if (user.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(user.Image);
+                    imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <img class="user-profile ml-2" src='@imageSrc' alt="" height=50 />
+                }
+                else
+                {
+                    <div class="user-profile ml-2 d-flex justify-content-center align-items-center">
+                        <h3 class="profile-name">@firstLetterOfName</h3>
+                    </div>
+                }
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="dropdown-item" href="/admin">Dashboard</a>
+                    }
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <a class="dropdown-item" href="/">Dashboard</a>
+                    }
+                    @if (User.IsInRole("User"))
+                    {
+                        <a class="dropdown-item" href="/users/dashboard">Dashboard</a>
+                    }
+                    @*<a class="dropdown-item" href="#">Dashboard</a>*@
+                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                </div>
+
+            </div>
+            @*<div class="user-profile">
+
+                </div>*@
+        </li>
+        <li class="navbar-item d-lg-none">
+            <a class="nav-link" href="">Dashboard</a>
+        </li>
+        <li class="navbar-item d-lg-none">
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        </li>
+        @*<li class="navbar-item">
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>*@
+        @*<li class="navbar-item"><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+    }
+}
+else
+{
+    <li class="navbar-item">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })</li>
+    <li class="navbar-item">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+
+}

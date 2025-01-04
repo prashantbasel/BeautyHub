@@ -1,0 +1,178 @@
+﻿@model IEnumerable<BeautyHub.Entities.Service>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Admin Services";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+<link href="~/Content/Style.css" rel="stylesheet" />
+
+
+<section class="table-content">
+    <div class="d-flex flex-row justify-content-end">
+        @Html.ActionLink("Add Service", "Create", "Services", new { }, new { @class = "btn btn-success register-button" })
+    </div>
+    @if (Model.Count() != 0)
+    {
+        <div>
+            <table class="table table-bordered" id="service_table">
+                <thead>
+                    <tr class="bg-dark text-light">
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Category.Name)
+
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Image)
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="service-table-body">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @if (item.Image != null)
+                                {
+                                    var base64 = Convert.ToBase64String(item.Image);
+                                    var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                    <img src='@imageSrc' alt="" height=35 />
+                                }
+                            </td>
+                            <td id="service-@item.Id">
+                                @if (item.IsActive)
+                                {
+                                    <div class="text-success">Active</div>
+                                }
+                                else
+                                {
+                                    <div class="text-danger">Inactive</div>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Services", new { id = item.Id })" class="btn btn-outline-success"><i class="far fa-edit"></i></a>
+                                <a href="@Url.Action("Details", "Services", new { id = item.Id })" class="btn btn-outline-secondary"><i class="fas fa-question"></i></a>
+                                @if (item.IsActive)
+                                {
+                                    <button class="btn btn-outline-danger service-status" id="btn-@item.Id.ToString()" data-id="@item.Id"><i class="fas fa-retweet"></i></button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-success service-status" id="btn-@item.Id.ToString()" data-id="@item.Id"><i class="fas fa-retweet"></i></button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron text-center font-weight-bold"><h1>No Services has been added yet</h1></div>
+    }
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootbox.js"></script>
+<script>
+    $("#service_table").DataTable({
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+
+        columns: [
+            null,
+            null,
+            null,
+            { orderable: false },
+            { orderable: false },
+            null,
+            { orderable: false },
+        ]
+    });
+
+    $(function () {
+        $("#service-table-body").on("click", ".service-status", function (e) {
+            var btnId = e.currentTarget.id;
+            var button = $("#" + btnId);
+            bootbox.confirm({
+                title: `Change status`,
+                message: "Are you sure you want to perform this ?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        className: "btn btn-danger",
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            method: "get",
+                            url: "/Services/Delete/",
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            data: { id: e.currentTarget.dataset.id },
+                            success: function (data) {
+                                if (data.IsActive) {
+                                    button.parent().prev(`#service-${data.Id}`).html('<div class="text-success">Active</div>');
+                                    button.addClass("btn btn-outline-danger");
+                                    location.reload(true);
+                                }
+                                else
+                                {
+                                    button.parent().prev(`#service-${data.Id}`).html('<div class="text-danger">InActive</div>');
+                                    button.addClass("btn btn-outline-success");
+                                    location.reload(true);
+                                }
+                            },
+                            error: function (error) {
+                                bootbox.alert({
+                                    message: "Something went wrong",
+                                    backdrop: true,
+                                    callback: function () {
+                                        location.reload(true);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                }
+            });
+
+        });
+    });
+</script>

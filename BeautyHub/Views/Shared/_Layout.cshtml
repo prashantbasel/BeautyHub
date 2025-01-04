@@ -1,0 +1,124 @@
+﻿@using BeautyHub.Models
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" />
+</head>
+<body>
+    <nav class="navbar navbar-light bg-white navbar-expand-lg fixed-top sticky-top py-4">
+        <div class="container">
+            <div class="">
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand" style="color:#F87F76;"><span class="font-weight-bold">Beauty</span>Hub</a>
+                @*@Html.ActionLink("BeautyHub", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse text-center" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="navbar-item @(ViewBag.Title == "Home Page" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "nav-link" })</li>
+                    <li class="navbar-item @(ViewBag.Title == "Services" ? "active" : "")">@Html.ActionLink("Services", "Services", "Home", new { }, new { @class = "nav-link" })</li>
+                    <li class="navbar-item @(ViewBag.Title == "Create Appointment" ? "active" : "")">@Html.ActionLink("Book Online", "Create", "Appointments", new { }, new { @class = "nav-link" })</li>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+            @*<div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>*@
+        </div>
+    </nav>
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+
+    @{
+        ApplicationDbContext context = new ApplicationDbContext();
+        var company = context.Companies.FirstOrDefault();
+        var officeLocations = context.OfficeLocations.ToList();
+    }
+
+    <div class="pb-0 mb-0 justify-content-center text-light footer-section">
+        <footer>
+            <div class="mt-5 justify-content-center py-5">
+                <div class="mx-auto col-10">
+                    <div class="row ">
+                        <div class="col-xl-6 col-md-4 col-sm-4 col-12 my-auto mx-auto a">
+                            <a href="@Url.Action("Index", "Home")" style="text-decoration: none"><h3 class="mb-md-0 mb-5 bold-text" style="color:#F87F76">Beauty<span class="font-weight-normal" style="color: #FFF0EB;">Hub</span></h3></a>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-sm-4 col-12">
+                            <h6 class="mb-3 mb-lg-2 bold-text text-muted"><b>MENU</b></h6>
+                            <ul class="list-unstyled">
+                                <li class="footer-link"><a href="@Url.Action("Index","Home")">Home</a></li>
+                                @*<li class="about-link footer-link"><a href="#about">About</a></li>*@
+                                @*<li class="contact-link footer-link"><a href="@Url.Action("Index","Home")">Contacts</a></li>*@
+                                <li class="footer-link"><a href="@Url.Action("Services","Home")">Services</a></li>
+                                @*<li class="footer-link"><a href="#">Rewards</a></li>*@
+                                <li class="booking-link footer-link"><a href="@Url.Action("Create","Appointments")">Book an Appointment</a></li>
+                                <li class="footer-link"><a href="@Url.Action("Cancel","Appointments")">Cancel Appointment</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-sm-4 col-12">
+                            <h6 class="mb-3 mb-lg-2 text-muted bold-text mt-sm-0 mt-5"><b>BRANCHES</b></h6>
+                            @foreach (var items in officeLocations)
+                            {
+                                <p class="mb-1">@items.Address</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-xl-6 col-md-4 col-sm-4 col-auto my-md-0 mt-5 order-sm-1 order-3 align-self-end">
+                            <p class="social text-muted mb-0 pb-0 bold-text">
+                            <span class="mx-2"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></span>
+                            <span class="mx-2"><i class="fa fa-linkedin-square fa-lg" aria-hidden="true"></i></span>
+                            <span class="mx-2"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></span>
+                            <span class="mx-2"><i class="fa fa-instagram fa-lg" aria-hidden="true" style="display:inline;"></i></span> </p><br />
+                            <small class="rights">&copy; @DateTime.Now.Year - BeautyHub</small>
+                        </div>
+                        <div class="col-xl-6 col-md-8 col-sm-4 col-auto order-1 align-self-end ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        let aboutSection = $("#about-section");
+        let aboutLink = $(".about-link");
+        let locationSection = $("#location-section");
+        let locationLink = $(".location-link");
+        let bookinglink = $(".booking-link");
+
+
+        aboutLink.click(function () {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: aboutSection.offset().top-60
+            }, 500);
+        });
+        locationLink.click(function () {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: locationSection.offset().top - 100
+            }, 500);
+        });
+        bookinglink.click(function () {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: registrationForm.offset().top - 60
+            }, 500);
+        });
+    </script>
+</body>
+</html>

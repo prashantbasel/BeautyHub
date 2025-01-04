@@ -1,0 +1,241 @@
+﻿@model IEnumerable<BeautyHub.Entities.Appointment>
+
+@{ ViewBag.Title = "User Dashboard";
+                Layout = "~/Views/Shared/_DashboardLayout.cshtml"; }
+<style>
+    .container-div-A, .container-div-B {
+        border-radius: 20px;
+    }
+
+    .container-div-A {
+        background-image: linear-gradient(-160deg, #ff6559 0%, #f87f76 100%);
+    }
+
+    .container-div-B {
+        background-image: linear-gradient(to right top, #007aff, #1b86ff, #3292ff, #469eff, #5aa9ff);
+    }
+
+    .icon-A {
+        color: #f87f76;
+    }
+
+    .icon-B {
+        color: #1b86ff;
+    }
+
+    .container-icon-A, .container-icon-B {
+        background-color: #fef2f2;
+        height: 10%;
+        border-radius: 20%;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .dashboard_card_data_A h2, .dashboard_card_data_B h2 {
+        color: #f87f76;
+    }
+
+    .dashboard_card_data h2 {
+        font-size: 4rem;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .dashboard_card_title {
+        color: #fafafa;
+    }
+    /*
+    .far, .fal {
+        font-size: 1.2rem;
+    }*/
+
+    th {
+        color: white;
+    }
+</style>
+
+<div class="container-fluid px-auto">
+
+    <h5 class="px-2 font-weight-bold mb-3">Dashboard</h5>
+
+    <div class=" d-flex flex-wrap ">
+        <div class="col-md-3 col-sm-6 px-sm-2 px-0 py-md-0 py-2">
+            <div class="d-flex flex-column bg-white  p-3 container-div-A">
+                <div class="d-flex">
+                    <div class="col-xl-9 col-lg-8 col-md-6 col-sm-9 col-9 px-0">
+                        <div class="dashboard_card_data dashboard_card_data_A">
+                            <h2 class="text-white">@ViewBag.NumberOfUpcomingAppointments</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-3 col-3 container-icon-A text-center ml-auto">
+                        <i class="far fa-calendar icon-A mx-auto"></i>
+                    </div>
+                </div>
+
+                <div class="small dashboard_card_title">
+                    Upcoming Appointments
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 px-sm-2 px-0 py-md-0 py-2">
+            <div class="d-flex flex-column bg-white  p-3 container-div-B">
+                <div class="d-flex">
+                    <div class="col-xl-9 col-lg-8 col-md-6 col-sm-9 col-9 px-0">
+                        <div class="dashboard_card_data dashboard_card_data_B">
+                            <h2 class="text-white">@ViewBag.NumberOfTotalAppointments</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-3 col-3 container-icon-B text-center ml-auto">
+                        <i class="far fa-calendar-alt icon-B mx-auto"></i>
+                    </div>
+                </div>
+
+                <div class="small dashboard_card_title">
+                    Total Appointments
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 px-sm-2 px-0 py-md-0 py-2">
+            <div class="d-flex flex-column bg-white  p-3 container-div-A">
+                <div class="d-flex">
+                    <div class="col-xl-9 col-lg-8 col-md-6 col-sm-9 col-9 px-0">
+                        <div class="dashboard_card_data dashboard_card_data_A">
+                            <h2 class="text-white">@ViewBag.rewardPoints</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-3 col-3 container-icon-A text-center ml-auto">
+                        <i class="far fa-star icon-A mx-auto"></i>
+                    </div>
+                </div>
+
+                <div class="small dashboard_card_title">
+                    Reward Points
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 px-sm-2 px-0 py-md-0 py-2">
+            <div class="d-flex flex-column bg-white  p-3 container-div-B">
+                <div class="d-flex">
+                    <div class="col-xl-9 col-lg-8 col-md-6 col-sm-9 col-9 px-0">
+                        <div class="dashboard_card_data dashboard_card_data_B">
+                            <h2 class="text-white">@ViewBag.ExpenseLeftForARewardPoint</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-3 col-3 container-icon-B text-center ml-auto">
+                        <i class="far fa-usd-circle icon-B mx-auto"></i>
+                    </div>
+                </div>
+
+                <div class="small dashboard_card_title">
+                    Expense Left for a Reward Point
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="px-2 font-weight-bold mb-3 mt-5">Upcoming Appointments</h5>
+    @{ if (Model.Count() != 0)
+                    {
+        <table class="table table-bordered table-hover">
+            <thead class="thead-primary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.AppointmentDate)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ServiceTime)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Service)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Service.Price)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.OfficeLocation)</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="appointment-tbody">
+                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.AppointmentDate.ToString("dd/MM/yyyy")</td>
+                        <td>@Html.DisplayFor(modelItem => item.ServiceTime.TimeRange)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Service.Name)</td>
+                        <td>Rs. @Html.DisplayFor(modelItem => item.Service.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.OfficeLocation.Address)</td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", "Appointments", new { id = item.Id })" class="btn btn-sm btn-outline-success"><i class="far fa-pen"></i></a>
+                            <button class="btn btn-sm btn-outline-danger appointment-status" id="btn-@item.Id.ToString()" data-id="@item.Id"><i class="far fa-trash"></i></button>
+                        </td>
+                    </tr> i++;
+                                    } }
+            </tbody>
+        </table> }
+                    else
+                    {
+        <div class="d-flex flex-row justify-content-center flex-wrap">
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 empty-div">
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 d-flex justify-content-start align-items-center">
+                <h5>
+                    No Upcoming Appointments. <br />
+                    Get an @Html.ActionLink("Appointment", "Create", "Appointments", routeValues: null, htmlAttributes: new { id = "appointment-form-link" })
+                </h5>
+            </div>
+        </div> } }
+
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootbox.js"></script>
+<script>
+    $(function () {
+        $("#appointment-tbody").on("click", ".appointment-status", function (e) {
+            var btnId = e.currentTarget.id;
+            var button = $("#" + btnId);
+            bootbox.confirm({
+                title: `Cancel Appointment`,
+                message: "Are you sure you want to cancel this appointment ?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        className: "btn btn-danger",
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            method: "get",
+                            url: "/Appointments/Delete/",
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            data: { id: e.currentTarget.dataset.id },
+                            success: function (data) {
+                                button.parent().parent().remove();
+                                bootbox.alert({
+                                    title: 'Appointment Cancelled',
+                                    message: "You have successfully cancelled your appointment",
+                                    backdrop: true,
+                                });
+                            },
+                            error: function (error) {
+                                bootbox.alert({
+                                    message: "Something went wrong",
+                                    backdrop: true,
+                                    callback: function () {
+                                        location.reload(true);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                }
+            });
+
+        });
+    });
+</script>

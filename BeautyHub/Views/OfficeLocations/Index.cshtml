@@ -1,0 +1,128 @@
+﻿@model IEnumerable<BeautyHub.Entities.OfficeLocation>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+<link href="~/Content/Style.css" rel="stylesheet" />
+@{ Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewBag.Title = "Admin OfficeLocations"; }
+
+
+
+<section class="table-content">
+    <div class="d-flex flex-row justify-content-end">
+        @Html.ActionLink("Add Location", "Create", "OfficeLocations", new { }, new { @class = "btn btn-success register-button" })
+    </div>
+
+    @if (Model.Count() != 0)
+    {
+        <div>
+            <table class="table table-bordered" id="location_table">
+                <thead>
+                    <tr class="bg-dark text-light">
+                        <th>
+                            @Html.ActionLink($"{Html.DisplayNameFor(model => model.First().Address)}", "Index", new { sortOrder = ViewBag.AddressSort, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Email)
+                        </th>
+                        <th>
+                            Phone
+                        </th>
+                        <th width="25%">
+                            @Html.DisplayNameFor(model => model.First().MapLink)
+                        </th>
+                        <th width="15%">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="location-table-body">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MapLink)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit","OfficeLocations",new { id=item.Id})" class="btn btn-outline-success"><i class="far fa-edit"></i></a>
+                                <a href="@Url.Action("Details","OfficeLocations",new { id=item.Id})" class="btn btn-outline-secondary"><i class="fas fa-question"></i></a>
+                                <button class="btn btn-outline-danger" id="btn-@item.Id.ToString()" data-id="@item.Id"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron text-center font-weight-bold">
+            <h1>No Location has been added yet</h1>
+        </div>
+    }
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootbox.js"></script>
+
+<script>
+    $("#location_table").DataTable({
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        columns: [
+            null,
+            null,
+            { orderable: false },
+            { orderable: false },
+            { orderable: false },
+        ]
+    });
+
+    $(function () {
+        $("#location-table-body").on("click", "button", function (e) {
+            var btnId = e.currentTarget.id;
+            var button = $("#" + btnId);
+            bootbox.confirm({
+                title: `Delete`,
+                message: "Are you sure you want to delete ?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        className: "btn btn-danger",
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            method: "get",
+                            url: "/OfficeLocations/Delete/",
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            data: { id: e.currentTarget.dataset.id },
+                            success: function (data) {
+                                button.parent().parent().remove();
+                            },
+                            error: function (error) { alert("Something went wrong"); }
+                        });
+                    }
+
+                }
+            });
+
+        });
+    });
+</script>

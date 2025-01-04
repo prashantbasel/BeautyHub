@@ -1,0 +1,29 @@
+﻿@model BeautyHub.Entities.ServiceTime
+
+@{
+    ViewBag.Title = "Admin ServiceTimes";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServiceTime</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+
+        <dd>
+            @{
+                string time = Model.Time.ToString("hh:mm tt");
+            }
+            @Html.DisplayFor(modelItem => time)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

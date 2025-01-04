@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BeautyHub.Entities.ServiceTime>
+
+@{
+    ViewBag.Title = "Admin ServiceTimes";
+    Layout = "~/Views/Shared/_Dashboardlayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeRange)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @{ 
+                string time = item.TimeRange;
+            }
+            @Html.DisplayFor(modelItem => time)
+        </td>
+        <td class="">
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new { @class = "btn btn-danger"})
+        </td>
+    </tr>
+}
+
+</table>

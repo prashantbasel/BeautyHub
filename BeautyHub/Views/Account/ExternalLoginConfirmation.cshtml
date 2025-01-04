@@ -1,0 +1,90 @@
+﻿@model BeautyHub.Models.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link href="~/Content/login.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="main-div">
+        <div class="col-xl-6 col-lg-8 col-md-8 col-sm-8 col-12 mx-auto align-self-center px-xl-5 px-lg-4 px-md-4 px-sm-4 px-4 pt-xl-5 pt-lg-4 py-md-4 py-sm-4 py-4 pb-xl-4 pb-lg-3" id="login-form">
+            <div class="align-self-center w-100">
+                <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                    <a href="/" style="text-decoration: none">
+                        <div class="d-flex justify-content-center align-items-center btn mb-2" id="back-to-home-button">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                    </a>
+                    <h4 class="text-center w-100 heading-text">Associate your @ViewBag.LoginProvider account.</h4>
+                    <div id="unnecessary"></div>
+                </div>
+                @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal, w-100", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <p class="text-info text-center">
+                        You've successfully authenticated with <span class="font-weight-bold" style="color: #F87F76">@ViewBag.LoginProvider</span>.
+                        Please enter the remaining details and click the Register button to finish
+                        logging in.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "control-label, font-weight-bold" })
+                            <div class="inner-addon left-addon">
+                                <i class="fa fa-user"></i>
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @Value = Session["FirstName"] })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6 form-group mx-auto mb-xl-4 mb-lg-3">
+                            @Html.LabelFor(m => m.LastName, new { @class = "control-label, font-weight-bold" })
+                            <div class="inner-addon left-addon">
+                                <i class="fa fa-user"></i>
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @Value = Session["LastName"] })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 form-group mx-auto mb-xl-4 mb-lg-3">
+                            @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label, font-weight-bold" })
+                            <div class="inner-addon left-addon">
+                                <i class="fa fa-phone-alt"></i>
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-md-12 form-group mx-auto mb-xl-4 mb-lg-3">
+                            @Html.LabelFor(m => m.Email, new { @class = "control-label, font-weight-bold" })
+                            <div class="inner-addon left-addon">
+                                <i class="fa fa-envelope"></i>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                        <div class="">
+                            <button type="submit" value="Register" class="btn w-100 p-2" style="background:#F87F76"><span class="text-white">Register</span></button>
+                        </div>
+                    </div>
+                 }
+            </div>
+        </div>
+    </div>
+</body>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+</html>

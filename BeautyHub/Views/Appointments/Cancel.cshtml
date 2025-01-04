@@ -1,0 +1,60 @@
+﻿@model BeautyHub.Entities.Appointment
+
+@{
+    ViewBag.Title = "Cancel Appointment";
+}
+
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link href="~/Content/login.css" rel="stylesheet" />
+<div class="col-xl-4 col-lg-4 col-md-6 col-sm-8 col-10 mx-auto align-self-center px-xl-5 px-lg-4 px-md-4 px-sm-4 px-4 pt-xl-5 pt-lg-4 py-md-4 py-sm-4 py-4 pb-xl-4 pb-lg-3" id="appointment-form">
+    <div class="align-self-center w-100">
+        <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+            <a href="/" style="text-decoration: none">
+                <div class="d-flex justify-content-center align-items-center btn mb-2" id="back-to-home-button">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+            </a>
+            <h4 class="text-center w-100 heading-text">Cancel Appointment</h4>
+            <div id="unnecessary">
+
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <span style="color:#F87F76;">@ViewBag.Error</span>
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })<span id="required">*</span>
+                <div class="inner-addon left-addon">
+                    <i class="far fa-phone-alt"></i>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control email-textbox", @required = "required" })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger, small", @style = "color: #F87F76;" })
+                </div>
+            </div>
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                @Html.LabelFor(m => m.Token, new { @class = "control-label" })<span id="required">*</span>
+                <div class="inner-addon left-addon">
+                    <i class="far fa-tag"></i>
+                    @Html.TextBoxFor(m => m.Token, new { @class = "form-control email-textbox", @required = "required" })
+                    @Html.ValidationMessageFor(model => model.Token, "", new { @class = "text-danger, small", @style = "color: #F87F76;" })
+                </div>
+            </div>
+
+            <div class="form-group mx-auto mb-xl-4 mb-lg-3">
+                <div class="">
+                    <button type="submit" value="Cancel" class="btn w-100 p-2" style="background:#F87F76"><span class="text-white">Cancel Appointment</span></button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

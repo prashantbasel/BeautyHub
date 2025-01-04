@@ -1,0 +1,108 @@
+﻿@model BeautyHub.Entities.Appointment
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using BeautyHub.Models
+
+@{ ViewBag.Title = "Create Appointment"; }
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+
+<link href="~/Content/login.css" rel="stylesheet" />
+
+<div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-12 mx-auto align-self-center px-xl-5 px-lg-4 px-md-4 px-sm-4 px-4 pt-xl-5 pt-lg-4 py-md-4 py-sm-4 py-4 pb-xl-4 pb-lg-3" id="appointment-form">
+    <div class="align-self-center w-100">
+        <div class="align-items-center mb-3">
+            <h4 class="text-center w-100 heading-text">Appointment</h4>
+        </div>
+        @{ Html.RenderPartial("_AppointmentForm", Model); }
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+    let categoryDropdown = $('#CategoryId');
+    let serviceDropdown = $('#ServiceId');
+    let serviceTimeDropdown = $('#ServiceTimeId');
+
+    $(document).ready(function () {
+        clearCategoryDropdown();
+        clearServiceDropdown();
+        clearServiceTimeDropdown();
+    });
+
+    $(document.getElementById("CategoryId").addEventListener("change", function () {
+
+        clearServiceDropdown();
+
+        $.ajax({
+            async: false,
+            url: "/Appointments/GetServices/",
+            type: "get",
+            data: { categoryId: this.value },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (key, entry) {
+                    serviceDropdown.append($('<option></option>').attr('value', entry.Id).text(entry.Name));
+                })
+            },
+            error: function (error) {
+                console.log(error.status);
+            }
+        });
+    }));
+
+    $(document.getElementById("AppointmentDate").addEventListener("change", function () {
+
+        clearServiceTimeDropdown();
+
+        var today = new Date();
+
+        if (Date.parse(this.value) < Date.parse(today)) {
+            $("#AppointmentDate").val('');
+            alert("Date cannot be today or before today");
+            return;
+        }
+        else {
+            $.ajax({
+                async: false,
+                url: "/Appointments/GetServiceTimes/",
+                type: "get",
+                data: { AppointmentDate: this.value },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    $.each(data, function (key, entry) {
+                        serviceTimeDropdown.append($('<option></option>').attr('value', entry.Id).text(entry.TimeRange));
+                    })
+                },
+                error: function (error) {
+                    console.log(error.status);
+                }
+            });
+        }
+    }));
+
+    function clearCategoryDropdown() {
+        categoryDropdown.prepend('<option selected="true" disabled>Choose Category</option>');
+        categoryDropdown.prop('selectedIndex', 0);
+    }
+
+    function clearServiceDropdown() {
+        serviceDropdown.empty();
+        serviceDropdown.append('<option selected="true" disabled>Choose Service</option>');
+        serviceDropdown.prop('selectedIndex', 0);
+    };
+
+    function clearServiceTimeDropdown() {
+        serviceTimeDropdown.empty();
+        serviceTimeDropdown.append('<option selected="true" disabled>Choose Service Time</option>');
+        serviceTimeDropdown.prop('selectedIndex', 0);
+    };</script>*@

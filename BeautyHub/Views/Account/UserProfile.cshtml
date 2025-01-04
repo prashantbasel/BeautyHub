@@ -1,0 +1,46 @@
+﻿@model BeautyHub.Models.ApplicationUser
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="d-flex flex-wrap " id="main" style="">
+    <div class="d-flex flex-wrap col-xl-8 col-lg-12 p-2 p-md-4">
+        <div class="col-xl-4 col-lg-4 col-md-5 col-sm-5" id="photo-container" style="">
+            @if (Model.Image != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Image);
+                var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <img src='@imageSrc' alt="" id="profileImage" style='height: 100%; width: 100%; object-fit: contain' />
+            }
+            @{
+                int a = ViewBag.stars;
+            }
+            <div class="text-center" style="margin-top: -40px;">
+                @for (var i = 0; i < a; i++)
+                {
+                    <i class="fas fa-star"></i>
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column col-xl-8 col-lg-8 col-md-7 col-sm-7 pl-4 py-4 my-auto" id="details">
+            <h4 class="mb-4" style="font-weight: 600;">@Model.FirstName @Model.LastName</h4>
+            <h6 class="my-1">@Convert.ToString(string.Format("{0:yyyy/MM/dd}", Model.DateOfBirth))</h6>
+            <h6 class="my-1">@Model.Email</h6>
+            <h6 class="my-1">@Model.PhoneNumber</h6>
+
+            @Html.ActionLink("Update Profile", "UpdateProfile", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary w-50 mt-4", id = "" })
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //(function () {
+    //    var img = document.getElementById('photo-container').firstChild;
+    //    img.onload = function () {
+    //        if (img.height > img.width) {
+    //            img.height = '100%';
+    //            img.width = '100%';
+    //        }
+    //    };
+</script>

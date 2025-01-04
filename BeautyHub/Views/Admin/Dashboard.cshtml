@@ -1,0 +1,194 @@
+﻿@model IEnumerable<BeautyHub.Entities.Appointment>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+<link href="~/Content/Style.css" rel="stylesheet" />
+@{ ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml"; }
+<h3 class="text-center">Bookings</h3>
+<hr />
+<section>
+    <div class="container d-flex justify-content-center">
+        <div class="bg-primary booking-card d-flex align-items-center">
+            <div class="card-icon d-flex">
+                <i class="fas fa-clipboard-check booking-card-icon"></i>
+                <p>
+                    Today : <strong>@ViewBag.BookingsToday</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-success booking-card d-flex align-items-center">
+            <div class="card-icon d-flex">
+                <i class="fas fa-clipboard-list booking-card-icon"></i>
+                <p>
+                    This Week : <strong>@ViewBag.BookingsInAWeek</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-danger booking-card d-flex align-items-center">
+            <div class="card-icon d-flex">
+                <i class="far fa-clipboard booking-card-icon"></i>
+                <p>
+                    This Month : <strong>@ViewBag.BookingsInAMonth</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if(Model.Count()==0)
+{
+    <div class="jumbotron mt-5">
+        <h1 class="text-black-50 text-center">No Bookings for today</h1>
+    </div>
+}
+else
+{
+    <section class="table-content">
+        <h4 class="text-center">Today's Bookings</h4>
+        <hr />
+        <table class="table table-bordered" id="booking_table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Service
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Served
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Service.Name)
+                        </td>
+                        <td>
+                            @item.ServiceTime.TimeRange
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td class="text-center">
+                            @if (item.IsServed)
+                            {
+                                <p class="text-success">Served</p>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-success status-button" id="btn-@item.Id.ToString()" data-id="@item.Id"><i class="fa fa-check" id="icon-@item.Id.ToString()"></i></button>
+                            }
+                            <div class="spinner-border text-secondary d-none" id="loading" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </section>
+}
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootbox.js"></script>
+<script>
+    $("#booking_table").DataTable({
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        "order": [[0, "desc"]],
+        columns: [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            { orderable: false },
+            { orderable: false }
+        ]
+    });
+
+</script>
+<script>
+    $(function () {
+        $("#tbody").on("click", ".status-button", function (e) {
+            e.stopPropagation();
+            var btnId = e.currentTarget.id;
+            var button = $("#" + btnId);
+            var iconId = e.target.id;
+            var icon = $("#" + iconId);
+            console.log(btnId);
+            console.log(iconId);
+            bootbox.confirm({
+                title: `<strong class="text-success">Served</strong>`,
+                message: "<strong>Is service Completed ?</strong>",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        className: "btn btn-success",
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            method: "get",
+                            url: "/Admin/AppointmentStatus/",
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            data: { id: e.currentTarget.dataset.id },
+                            beforeSend: function () { $("#loading").addClass("d-inline-block"); },
+                            success: function (data) {
+                                console.log(data);
+                                button.parent().html(`<p class="text-success">Served</p>`);
+                                button.hide();
+
+                            },
+                            complete: function () { $("#loading").removeClass("d-inline-block") },
+                            error: function (error) { console.log(error); }
+                        });
+                    }
+
+                }
+            });
+
+        });
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿@model BeautyHub.Entities.OfficeLocation
+
+@{
+    Layout = "~/Views/Shared/_Dashboardlayout.cshtml";
+    ViewBag.Title = "Admin OfficeLocations";
+}
+
+<section class="create-category create">
+    <div class="create-form-card bg-light mx-auto col-xl-6 col-md-6 col-12 mb-xl-4 mb-lg-3 pt-4 pb-4">
+        <h2 class="text-center">Location</h2>
+        @using (Html.BeginForm("Edit", "OfficeLocations", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal d-flex justify-content-center align-items-center">
+                @Html.HiddenFor(model => model.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-xl-10 col-md-10 form-group mx-auto mb-xl-4 mb-lg-3">
+                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-md-10 form-group mx-auto mb-xl-4 mb-lg-3">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-md-10 form-group mx-auto mb-xl-4 mb-lg-3">
+                        @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-md-10 form-group mx-auto mb-xl-4 mb-lg-3">
+                        @Html.LabelFor(model => model.MapLink, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.EditorFor(model => model.MapLink, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MapLink, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-md-10 form-group mx-auto mb-xl-4 mb-lg-3">
+                        <div class="">
+                            <input type="submit" value="Save" class="btn btn-success submit-btn w-100 mt-3" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="d-flex justify-content-center">
+            @Html.ActionLink("Back to List", "Index", new { }, new { @class = "backto-list btn btn-primary" })
+        </div>
+    </div>
+</section>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

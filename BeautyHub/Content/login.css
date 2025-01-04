@@ -1,0 +1,181 @@
+body {
+    background-color: #FEF2F2;
+}
+
+.main-div {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+#login-form, #register-form, #appointment-form {
+    background-color: white;
+}
+
+#login-form label, #register-form label, #appointment-form label {
+    color: #313131;
+    margin-bottom: 0;
+}
+
+#login-form input, #register-form input {
+    padding: 20px 10px 20px 35px;
+    background-color: #F6F6F6;
+    border: none;
+}
+
+#appointment-form select{
+    padding-left: 30px;
+}
+
+#appointment-form input{
+    padding-left: 35px;
+}
+
+.inner-addon .fa, .inner-addon .fab, .inner-addon .far, .inner-addon .fal {
+    position: absolute;
+    padding: 11px;
+    pointer-events: none;
+}
+
+.inner-addon .fa{
+    color: #313131;
+}
+
+#appointment-form .inner-addon .fa, #appointment-form .inner-addon .far, #appointment-form .inner-addon .fal {
+    color: #F87F76;
+}
+
+
+/* add padding  */
+.left-addon input {
+    padding-left: 30px;
+}
+
+.divider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: #B8B8B8;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    display: block;
+    height: 1px;
+    flex: 1;
+    background-color: #B8B8B8;
+}
+
+.social-button {
+    border-radius: 9999px;
+    border: 1px solid #F87F76;
+    font-weight: 600;
+}
+
+.fa-facebook-f {
+    color: #4267B2;
+}
+
+.fa-google {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.heading-text {
+    color: #F87F76;
+}
+
+/*h4.heading-text::after{
+    content: "";
+    display: block;
+    height: 3px;
+    width: 30px;
+    background-color: black;
+    margin-top: 2px;
+    margin-right: auto;
+    margin-left: auto;
+}*/
+
+@media screen and (max-width: 576px) {
+    body {
+        background-color: white;
+    }
+}
+
+#socialLoginList #Google:hover {
+    background-color: #DB4437;
+    color: white;
+    font-weight: 400;
+    border: 1px solid #DB4437;
+}
+
+#socialLoginList #Facebook:hover {
+    background-color: #4267B2;
+    color: white;
+    font-weight: 400;
+    border: 1px solid #4267B2;
+}
+
+#socialLoginList #Google:hover .fa-google {
+    background: transparent;
+    -webkit-text-fill-color: white;
+}
+
+#socialLoginList #Facebook:hover .fa-facebook-f {
+    color: white;
+}
+
+#login-form{
+    position:relative;
+
+}
+
+#back-button {
+    border-radius: 9999px;
+    background: #F4D5B1;
+    border: 4px solid white;
+    padding-right: 15px;
+    width: 50px;
+    height: 50px;
+    color: #313131;
+    position:absolute;
+    top:50%;
+    left:-25px;
+    transform:translateY(-50%);
+}
+
+#back-to-home-button {
+    border-radius: 9999px;
+    /*background: #F4D5B1;*/
+    width: 30px;
+    height: 30px;
+    color: #F87F76;
+}
+
+#back-to-home-button:hover {
+    background: #F4D5B1;
+}
+
+#unnecessary {
+    width: 30px;
+    height: 30px;
+}
+
+legend {
+    color: #F87F76;
+}
+
+#appointment-form label {
+    font-weight: 600;
+    color: #3F3F3F;
+}
+
+.unstyled::-webkit-inner-spin-button,
+.unstyled::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}

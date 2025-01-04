@@ -1,0 +1,47 @@
+﻿@model BeautyHub.Entities.ServiceTime
+
+@using HtmlHelpers.BeginCollectionItem;
+
+<tr id="newQualification" style="display:flex;">
+    @using (Html.BeginCollectionItem("serviceTimes"))
+    {
+    <td class="col-12">
+        @if (ViewBag.value != null)
+        {
+            @Html.EditorFor(model => model.TimeRange, new { htmlAttributes = new { @Value = ViewBag.value, @class = "form-control col-md-12", @required = true } })
+        }
+        @Html.ValidationMessageFor(model => model.TimeRange, "", new { @class = "text-danger" })
+    </td>
+        @*<td id="buttonContainer" class="col-6">
+                <button type="button" id="addTime" onclick="addRow()" class="bg-primary" style="color:white;">+</button>
+                <button type="button" id="removeTime" onclick="removeRow(this)" class="bg-danger" style="color:white;">-</button>
+            </td>*@
+    }
+</tr>
+@*<script>
+
+        function addRow() {
+            $.ajax({
+                url: "/ServiceTimes/GetServiceTime",
+                type: "get",
+                success: function (data) {
+                    $("#serviceTimeForm").append(data);
+                },
+                error: function (error) {
+                    console.log(error.status);
+                }
+            });
+        };
+
+        function removeRow(e) {
+            var parent = e.parentNode;
+            console.log("parent", parent);
+            const grandparent = parent.parentNode;
+            console.log("grandparent", grandparent);
+            document.getElementById("serviceTimeForm").removeChild(grandparent);
+        }
+
+        $(function () {
+            $("#removeQualification").addClass("hide");
+        });
+    </script>*@
