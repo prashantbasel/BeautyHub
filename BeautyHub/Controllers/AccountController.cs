@@ -23,7 +23,7 @@ namespace BeautyHub.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        RoleManager<IdentityRole> roleManager; 
+        RoleManager<IdentityRole> roleManager;
 
         private ApplicationDbContext context;
         public AccountController()
@@ -32,7 +32,7 @@ namespace BeautyHub.Controllers
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -44,9 +44,9 @@ namespace BeautyHub.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -101,9 +101,21 @@ namespace BeautyHub.Controllers
             {
                 case SignInStatus.Success:
                     var role = roleManager.FindById(user.RoleId);
-                    if (role.Name.ToLower()=="admin")
+
+                    ActivityLogger activityLogger = new ActivityLogger(context);
+
+                    activityLogger.Log(
+                       userId: user.Id,
+                       userRole: role.Name,
+                       action: "Login",
+                       resource: "Login",
+                       details: "User logged in.",
+                       status: "Success"
+                   );
+
+                    if (role.Name.ToLower() == "admin")
                     {
-                        return RedirectToAction("Dashboard","Admin");
+                        return RedirectToAction("Dashboard", "Admin");
                     }
                     if (role.Name.ToLower() == "user")
                     {
@@ -111,7 +123,7 @@ namespace BeautyHub.Controllers
                     }
                     if (role.Name.ToLower() == "superadmin")
                     {
-                        if(context.Companies.Count() == 0)
+                        if (context.Companies.Count() == 0)
                         {
                             return RedirectToAction("Create", "Companies");
                         }
@@ -124,7 +136,7 @@ namespace BeautyHub.Controllers
                     {
                         return RedirectToAction("Index", "Home");
                     }
-                    //return RedirectToLocal(returnUrl);
+                //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -165,7 +177,7 @@ namespace BeautyHub.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -489,15 +501,16 @@ namespace BeautyHub.Controllers
                 {
                     role = roleManager.FindByName("User");
                 }
-                var user = new ApplicationUser {
+                var user = new ApplicationUser
+                {
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Status = "Active",
-                    RoleId=role.Id,
-                    LockoutEnabled=false
+                    RoleId = role.Id,
+                    LockoutEnabled = false
                 };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -632,7 +645,7 @@ namespace BeautyHub.Controllers
                 {
                     return RedirectToAction("UpdateProfile", "Account");
                 }
-                
+
 
             }
             catch

@@ -62,5 +62,6 @@ namespace BeautyHub.Models
         public DbSet<Banner> Banners { get; set; }
         public DbSet<OfficeLocation> OfficeLocations { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
     }
 }

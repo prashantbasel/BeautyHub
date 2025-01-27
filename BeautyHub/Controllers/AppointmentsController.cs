@@ -133,11 +133,11 @@ namespace BeautyHub.Controllers
                 ActivityLogger activityLogger = new ActivityLogger(db);
                 if (User.IsInRole("User"))
                 {
-                    var user = db.Users.Where(m => m.Email == User.Identity.Name).FirstOrDefault();
+                    var user = db.Users.Where(m => m.Email == User.Identity.Name).Include(x => x.Role).FirstOrDefault();
 
                     activityLogger.Log(
                        userId: user.Id,
-                       userRole: user.Role.ToString(),
+                       userRole: user.Role.Name,
                        action: "Book Appointment",
                        resource: "Appointments",
                        details: "User booked an appointment.",
@@ -231,6 +231,12 @@ namespace BeautyHub.Controllers
             }
             catch (Exception e)
             {
+                ErrorLogger errorLogger = new ErrorLogger(db);
+
+                errorLogger.Log(
+                    error: e.Message,
+                    detail: e.InnerException.Message
+               );
                 throw new Exception(e.Message);
             }
         }
