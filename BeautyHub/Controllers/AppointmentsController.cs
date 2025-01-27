@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 using BeautyHub.Entities;
 using BeautyHub.Models;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace BeautyHub.Controllers
 {
@@ -132,6 +129,22 @@ namespace BeautyHub.Controllers
                 }
 
                 db.Appointments.Add(appointment);
+
+                ActivityLogger activityLogger = new ActivityLogger(db);
+                if (User.IsInRole("User"))
+                {
+                    var user = db.Users.Where(m => m.Email == User.Identity.Name).FirstOrDefault();
+
+                    activityLogger.Log(
+                       userId: user.Id,
+                       userRole: user.Role.ToString(),
+                       action: "Book Appointment",
+                       resource: "Appointments",
+                       details: "User booked an appointment.",
+                       status: "Success"
+                   );
+                }
+
                 db.SaveChanges();
                 if (Request.IsAuthenticated)
                 {

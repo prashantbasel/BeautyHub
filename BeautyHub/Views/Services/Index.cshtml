@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<BeautyHub.Entities.Service>
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Dashboardlayout.cshtml";
     ViewBag.Title = "Admin Services";
 }
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
 <link href="~/Content/Style.css" rel="stylesheet" />
 
@@ -151,8 +152,7 @@
                                     button.addClass("btn btn-outline-danger");
                                     location.reload(true);
                                 }
-                                else
-                                {
+                                else {
                                     button.parent().prev(`#service-${data.Id}`).html('<div class="text-danger">InActive</div>');
                                     button.addClass("btn btn-outline-success");
                                     location.reload(true);
