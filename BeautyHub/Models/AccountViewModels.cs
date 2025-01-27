@@ -55,6 +55,7 @@ namespace BeautyHub.Models
         public bool RememberMe { get; set; }
     }
 
+
     public class ForgotViewModel
     {
         [Required]
