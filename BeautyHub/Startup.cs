@@ -39,10 +39,10 @@ namespace BeautyHub
                 var Dob = new DateTime(1996, 09, 29);
                 var user = new ApplicationUser
                 {
-                    UserName = "gurau.anil@gmail.com",
-                    Email = "gurau.anil@gmail.com",
-                    FirstName = "Anil",
-                    LastName = "Gurau",
+                    UserName = "prashant@gmail.com",
+                    Email = "prashant@gmail.com",
+                    FirstName = "Prashant",
+                    LastName = "basel",
                     PhoneNumber = "9867137162",
                     EmailConfirmed = true,
                     DateOfBirth=Dob.Date,
