@@ -124,11 +124,11 @@
                                 <i class="fa fa-key"></i>
                                 @Html.PasswordFor(m => m.Password, new
                                 {
-     @class = "form-control",
-     @oninput = "checkPasswordStrength(this.value)",
-     @onpaste = "preventCopyPaste(event)",
-     @oncopy = "preventCopyPaste(event)"
- })
+                                     @class = "form-control",
+                                     @oninput = "checkPasswordStrength(this.value)",
+                                     @onpaste = "preventCopyPaste(event)",
+                                     @oncopy = "preventCopyPaste(event)"
+                                 })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                 <small id="password-strength" class="form-text mt-2 font-weight-bold"></small> <!-- Strength indicator -->
                             </div>
@@ -138,11 +138,11 @@
                             <div class="inner-addon left-addon">
                                 <i class="fa fa-key"></i>
                                 @Html.PasswordFor(m => m.ConfirmPassword, new
-                                {
-     @class = "form-control",
-     @onpaste = "preventCopyPaste(event)",
-     @oncopy = "preventCopyPaste(event)"
- })
+                                                                {
+                                     @class = "form-control",
+                                     @onpaste = "preventCopyPaste(event)",
+                                     @oncopy = "preventCopyPaste(event)"
+                                 })
                                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                             </div>
                         </div>
